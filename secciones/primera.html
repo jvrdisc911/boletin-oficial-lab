@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primera Sección - Legislación y Avisos Oficiales</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <div class="logo">
+    <h1>Boletín Oficial</h1>
+    <p>República Argentina</p>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Inicio</a></li>
+      <li><a href="primera.html">Primera Sección</a></li>
+      <li><a href="segunda.html">Segunda Sección</a></li>
+      <li><a href="tercera.html">Tercera Sección</a></li>
+      <li><a href="cuarta.html">Cuarta Sección</a></li>
+    </ul>
+  </nav>
+  <div class="busqueda">
+    <input type="text" placeholder="Buscar en el Boletín Oficial...">
+    <button>Buscar</button>
+  </div>
+</header>
+
+<main data-seccion="1">
+  <div class="seccion-header">
+    <h2>Primera Sección</h2>
+    <p>Legislación y Avisos Oficiales — Leyes, decretos, resoluciones y disposiciones.</p>
+  </div>
+
+  <div class="filtros">
+    <button class="filtro-btn active" data-categoria="">Todos</button>
+    <button class="filtro-btn" data-categoria="1">Leyes</button>
+    <button class="filtro-btn" data-categoria="2">Decretos</button>
+    <button class="filtro-btn" data-categoria="3">Resoluciones</button>
+    <button class="filtro-btn" data-categoria="4">Disposiciones</button>
+  </div>
+
+  <div id="listado-avisos" class="listado-principal">
+    <p class="cargando">Cargando avisos...</p>
+  </div>
+</main>
+
+<footer>
+  <p>Boletín Oficial de la República Argentina - Laboratorio de Informática</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  // Filtros por categoría
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.getAttribute('data-categoria');
+      cargarAvisosConFiltro(1, cat);
+    });
+  });
+
+  async function cargarAvisosConFiltro(seccionId, categoriaId) {
+    const contenedor = document.getElementById('listado-avisos');
+    contenedor.innerHTML = '<p class="cargando">Cargando...</p>';
+    let url = `http://localhost:3000/api/avisos?seccion=${seccionId}`;
+    if (categoriaId) url += `&categoria=${categoriaId}`;
+    try {
+      const res = await fetch(url);
+      const avisos = await res.json();
+      if (avisos.length === 0) {
+        contenedor.innerHTML = '<p class="sin-resultados">No hay avisos en esta categoría.</p>';
+        return;
+      }
+      contenedor.innerHTML = avisos.map(a => renderAviso(a)).join('');
+    } catch(e) {
+      contenedor.innerHTML = '<p class="error">Error al cargar avisos.</p>';
+    }
+  }
+</script>
+</body>
+</html>
