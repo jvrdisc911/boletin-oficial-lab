@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuarta Sección - Dominios de Internet</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <div class="logo">
+    <h1>Boletín Oficial</h1>
+    <p>República Argentina</p>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Inicio</a></li>
+      <li><a href="primera.html">Primera Sección</a></li>
+      <li><a href="segunda.html">Segunda Sección</a></li>
+      <li><a href="tercera.html">Tercera Sección</a></li>
+      <li><a href="cuarta.html">Cuarta Sección</a></li>
+    </ul>
+  </nav>
+  <div class="busqueda">
+    <input type="text" placeholder="Buscar en el Boletín Oficial...">
+    <button>Buscar</button>
+  </div>
+</header>
+
+<main data-seccion="4">
+  <div class="seccion-header">
+    <h2>Cuarta Sección</h2>
+    <p>Dominios de Internet — Registro, transferencia y baja de dominios .ar.</p>
+  </div>
+
+  <div class="filtros">
+    <button class="filtro-btn active" data-categoria="">Todos</button>
+    <button class="filtro-btn" data-categoria="16">Registro</button>
+    <button class="filtro-btn" data-categoria="17">Transferencia</button>
+    <button class="filtro-btn" data-categoria="18">Baja</button>
+  </div>
+
+  <div id="listado-avisos" class="listado-principal">
+    <p class="cargando">Cargando avisos...</p>
+  </div>
+</main>
+
+<footer>
+  <p>Boletín Oficial de la República Argentina - Laboratorio de Informática</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.getAttribute('data-categoria');
+      cargarAvisosConFiltro(4, cat);
+    });
+  });
+
+  async function cargarAvisosConFiltro(seccionId, categoriaId) {
+    const contenedor = document.getElementById('listado-avisos');
+    contenedor.innerHTML = '<p class="cargando">Cargando...</p>';
+    let url = `http://localhost:3000/api/avisos?seccion=${seccionId}`;
+    if (categoriaId) url += `&categoria=${categoriaId}`;
+    try {
+      const res = await fetch(url);
+      const avisos = await res.json();
+      if (avisos.length === 0) {
+        contenedor.innerHTML = '<p class="sin-resultados">No hay avisos en esta categoría.</p>';
+        return;
+      }
+      contenedor.innerHTML = avisos.map(a => renderAviso(a)).join('');
+    } catch(e) {
+      contenedor.innerHTML = '<p class="error">Error al cargar avisos.</p>';
+    }
+  }
+</script>
+</body>
+</html>
