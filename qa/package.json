@@ -1,0 +1,16 @@
+{
+"name": "boletin-oficial-qa",
+"version": "1.0.0",
+"description": "Suite de tests QA - Boletín Oficial Laboratorio",
+"scripts": {
+  "test": "jest --testPathPattern=qa/tests --verbose",
+  "test:funcional": "jest qa/tests/funcional.test.js --verbose",
+  "test:seguridad": "jest qa/tests/seguridad.test.js --verbose",
+  "test:regresion": "jest qa/tests/regresion.test.js --verbose",
+  "test:all": "jest qa/tests --verbose --coverage"
+},
+"devDependencies": {
+  "jest": "^29.7.0",
+  "supertest": "^6.3.4"
+}
+}
