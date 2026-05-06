@@ -4,7 +4,7 @@
 // Conectado con API backend
 // ============================================
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = `http://${window.location.hostname}:3000/api`;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -26,7 +26,6 @@ if (btnBuscar && inputBuscar) {
 }
 
 // ---- CARGA DE AVISOS POR SECCIÓN ----
-// Se activa si la página tiene un atributo data-seccion en el <main>
 const main = document.querySelector('main[data-seccion]');
 if (main) {
   const seccionId = main.getAttribute('data-seccion');
