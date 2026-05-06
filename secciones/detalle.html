@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalle de Aviso - Boletín Oficial</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <div class="logo">
+    <h1>Boletín Oficial</h1>
+    <p>República Argentina</p>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Inicio</a></li>
+      <li><a href="primera.html">Primera Sección</a></li>
+      <li><a href="segunda.html">Segunda Sección</a></li>
+      <li><a href="tercera.html">Tercera Sección</a></li>
+      <li><a href="cuarta.html">Cuarta Sección</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div id="detalle-aviso">
+    <p class="cargando">Cargando aviso...</p>
+  </div>
+</main>
+
+<footer>
+  <p>Boletín Oficial de la República Argentina - Laboratorio de Informática</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (id) {
+    cargarDetalle(id);
+  } else {
+    document.getElementById('detalle-aviso').innerHTML = '<p class="error">No se especificó un aviso.</p>';
+  }
+</script>
+</body>
+</html>
